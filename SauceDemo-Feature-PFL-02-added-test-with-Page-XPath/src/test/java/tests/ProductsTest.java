@@ -1,30 +1,21 @@
 package tests;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import io.qameta.allure.*;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.CartPage;
-import pages.LoginPage;
-import pages.ProductsPage;
+import utils.TestListener;
 
-public class ProductsTest {
-    WebDriver driver;
-    LoginPage loginPage;
-    ProductsPage productsPage;
-    CartPage cartPage;
+@Listeners(TestListener.class)
+public class ProductsTest extends BaseTest {
 
-    @BeforeMethod
-    public void setup() {
-        driver = new ChromeDriver();
-        loginPage = new LoginPage(driver);
-        productsPage = new ProductsPage(driver);
-        cartPage = new CartPage(driver);
-    }
-
-    @Test
+    @Test(testName = "Фильтр от высокой к низкой цене",
+            description = "Включение фильтра от высокой к низкой цене", groups = {"Smoke"})
+    @Description("Фильтр от высокой к низкой цене")
+    @Severity(SeverityLevel.NORMAL)
+    @Epic("SauceDemo-1")
+    @Feature("Login in SauceDemo")
+    @TmsLink("www.jira.com/ITM-1")
     public void CheckFilterPriceHighLow() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -33,7 +24,13 @@ public class ProductsTest {
                 "Первый товар не самый дорогой");
     }
 
-    @Test
+    @Test(testName = "Фильтр от низкой к высокой цене",
+            description = "Включение фильтра от низкой к высокой цене", groups = {"Smoke"})
+    @Description("Фильтр от низкой к высокой цене")
+    @Severity(SeverityLevel.NORMAL)
+    @Epic("SauceDemo-1")
+    @Feature("Login in SauceDemo")
+    @TmsLink("www.jira.com/ITM-1")
     public void CheckFilterPriceLowHigh() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -42,7 +39,13 @@ public class ProductsTest {
                 "Первый товар не самый дешевый");
     }
 
-    @Test
+    @Test(testName = "Фильтр от A до Z",
+            description = "Включение алфавитного фильтра от A к Z", groups = {"Smoke"})
+    @Description("Фильтр от A до Z")
+    @Severity(SeverityLevel.NORMAL)
+    @Epic("SauceDemo-1")
+    @Feature("Login in SauceDemo")
+    @TmsLink("www.jira.com/ITM-1")
     public void CheckFilterNameAtoZ() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -51,7 +54,13 @@ public class ProductsTest {
                 "Первый товар не первый по алфавиту");
     }
 
-    @Test
+    @Test(testName = "Фильтр от Z до A",
+            description = "Включение алфавитного фильтра от Z к A", groups = {"Smoke"})
+    @Description("Фильтр от Z до A")
+    @Severity(SeverityLevel.NORMAL)
+    @Epic("SauceDemo-1")
+    @Feature("Login in SauceDemo")
+    @TmsLink("www.jira.com/ITM-1")
     public void CheckFilterNameZtoA() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -60,9 +69,5 @@ public class ProductsTest {
                 "Первый товар не последний по алфавиту");
     }
 
-    @AfterMethod(alwaysRun = true)
-    public void quit() {
-        driver.quit();
-    }
 }
 

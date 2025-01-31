@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="2" name="SauceDemo CrossBrowser" parallel="tests">
+    <listeners>
+        <listener class-name="utils.TestListener"/>
+        <listener class-name="utils.MyTransformer"/>
+    </listeners>
+    <test name="Chrome">
+        <classes>
+            <class name="tests.LoginTest"/>
+            <class name="tests.ProductsTest"/>
+            <class name="tests.CartTest"/>
+            <parameter name="browser" value="chrome"/>
+        </classes>
+    </test> <!-- Test -->
+    <test name="MicrosoftEdge">
+        <classes>
+            <class name="tests.LoginTest"/>
+            <class name="tests.ProductsTest"/>
+            <class name="tests.CartTest"/>
+            <parameter name="browser" value="edge"/>
+        </classes>
+    </test> <!-- Test -->
+</suite>

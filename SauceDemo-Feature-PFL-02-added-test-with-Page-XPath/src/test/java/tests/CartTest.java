@@ -1,31 +1,20 @@
 package tests;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import io.qameta.allure.*;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.CartPage;
-import pages.LoginPage;
-import pages.ProductsPage;
+import utils.TestListener;
 
-public class CartTest {
-    WebDriver driver;
-    LoginPage loginPage;
-    ProductsPage productsPage;
-    CartPage cartPage;
+@Listeners(TestListener.class)
+public class CartTest extends BaseTest {
 
-
-    @BeforeMethod
-    public void setup() {
-        driver = new ChromeDriver();
-        loginPage = new LoginPage(driver);
-        productsPage = new ProductsPage(driver);
-        cartPage = new CartPage(driver);
-    }
-
-    @Test
+    @Test(testName = "Добавление товара в корзину",
+            description = "Товар добален в коризу и в ней отображается", groups = {"Smoke"})
+    @Description("Добавление товара в коризину")
+    @Severity(SeverityLevel.CRITICAL)
+    @Epic("SauceDemo-1")
+    @TmsLink("www.jira.com/ITM-1")
     public void CheckAddProduct() {
         SoftAssert softAssert = new SoftAssert();
         loginPage.open();
@@ -41,7 +30,12 @@ public class CartTest {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(testName = "Удаление товара из коризины",
+            description = "Товар добавляется и удаляется из корзины", groups = {"Smoke"})
+    @Description("Удаление товара из коризины")
+    @Severity(SeverityLevel.CRITICAL)
+    @Epic("SauceDemo-1")
+    @TmsLink("www.jira.com/ITM-1")
     public void CheckRemoveProduct() {
         SoftAssert softAssert = new SoftAssert();
         loginPage.open();
@@ -57,10 +51,5 @@ public class CartTest {
         softAssert.assertTrue(cartPage.firstItemInCart(),
                 "В корзине товар отображается");
         softAssert.assertAll();
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void quit() {
-        driver.quit();
     }
 }

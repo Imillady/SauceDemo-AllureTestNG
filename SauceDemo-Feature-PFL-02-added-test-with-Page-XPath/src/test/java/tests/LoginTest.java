@@ -1,86 +1,54 @@
 package tests;
 
 import io.qameta.allure.*;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pages.LoginPage;
-import pages.ProductsPage;
-import utils.AllureUtils;
+import utils.TestListener;
 
 import static org.testng.Assert.assertEquals;
 
 @Listeners(TestListener.class)
-public class LoginTest {
-    WebDriver driver;
-    LoginPage loginPage;
-    ProductsPage productsPage;
+public class LoginTest extends BaseTest {
 
-
-    @BeforeMethod
-    public void setup() {
-        driver = new ChromeDriver();
-        loginPage = new LoginPage(driver);
-        productsPage = new ProductsPage(driver);
-    }
-
-    @Test (testName = "Проверка успешного входа на сайт")
+    @Test(testName = "Успешный вход на сайт", description = "Валидный логин и пароль",
+            groups = {"Smoke"})
     @Description("Вход на сайт с верным логином и паролем")
-    @Severity(SeverityLevel.NORMAL)
+    @Severity(SeverityLevel.BLOCKER)
     @Epic("SauceDemo-1")
     @Feature("Login in SauceDemo")
-    @Story("Успешный вход на сайт")
     @TmsLink("www.jira.com/ITM-1")
-    @Issue("www.jira.com/ITM-2")
-    @Flaky //символ нестабильности "бомба"
     public void CheckPositiveSingUp() {
         loginPage.open();
-        loginPage.login("", "secret_sauce");
+        loginPage.login("standard_user", "secret_sauce");
         assertEquals(
                 productsPage.getTitle(),
                 "Products",
                 "Вход не выполнен");
     }
 
-    @Test
-    public void CheckNegativeSingUp1() {
-        loginPage.open();
-        loginPage.login("123", "123");
-        assertEquals(
-                loginPage.getErrorMessage(),
-                "Epic sadface: Username and password do not match any user in this service",
-                "Сообщение об ошибке не появилось или не корректно");
+    @DataProvider(name = "LoginData")
+    public Object[][] LoginData() {
+        return new Object[][]{
+                {"123", "123", "Epic sadface: Username and password do not match any user in this service"},
+                {"", "", "Epic sadface: Username is required"},
+                {"user-name", "", "Epic sadface: Password is required"}
+        };
     }
 
-    @Test
-    public void CheckNegativeSingUp2() {
+    @Test(dataProvider = "LoginData", testName = "Вход на сайт с ошибкой", description = "Не валидный логин и пароль",
+            groups = {"Smoke"})
+    @Description("Вход на сайт с не валидными логин и пароль")
+    @Severity(SeverityLevel.NORMAL)
+    @Epic("SauceDemo-1")
+    @Feature("Login in SauceDemo")
+    @TmsLink("www.jira.com/ITM-1")
+    public void checkNegativeLogin(String user, String password, String message) {
         loginPage.open();
-        loginPage.login("", "");
+        loginPage.login(user, password);
         assertEquals(
                 loginPage.getErrorMessage(),
-                "Epic sadface: Username is required",
+                message,
                 "Сообщение об ошибке не появилось или не корректно");
-    }
-
-    @Test
-    public void CheckNegativeSingUp3() {
-        loginPage.open();
-        loginPage.login("user-name", "");
-        assertEquals(
-                loginPage.getErrorMessage(),
-                "Epic sadface: Password is required",
-                "Сообщение об ошибке не появилось или не корректно");
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void tearDown(ITestResult result) {
-        if (ITestResult.FAILURE == result.getStatus()){
-            AllureUtils.takeScreenshot(driver);
-        }
-        driver.quit();
     }
 }
