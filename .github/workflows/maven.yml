@@ -35,4 +35,4 @@ jobs:
           cache: maven
       - name: AutoTests
         run: mvn clean test
-        working-directory: ./SauceDemo-AllureTestNG/SauceDemo-Feature-PFL-02-added-test-with-Page-XPath
+        working-directory: ./SauceDemo-Feature-PFL-02-added-test-with-Page-XPath
