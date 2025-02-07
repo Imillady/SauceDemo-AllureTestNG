@@ -9,6 +9,12 @@
 name: SauceDemoHW
 
 on:
+  workflow_dispatch:  # Добавлено для ручного запуска
+    inputs:
+      branch:
+        description: 'Branch to build'
+        required: true
+        default: 'main'
   push:
     branches: [ "main" ]
   pull_request:
