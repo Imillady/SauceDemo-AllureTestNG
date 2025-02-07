@@ -3,10 +3,12 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import tests.BaseTest;
 
 import static utils.AllureUtils.takeScreenshot;
 
-public class LoginPage {
+public class LoginPage extends BaseTest {
+
     WebDriver driver;
 
     By userField = By.xpath("//*[@id='user-name']");
